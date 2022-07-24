@@ -1,0 +1,3 @@
+[submodule "jpgraph"]
+	path = jpgraph
+	url = https://github.com/HuasoFoundries/jpgraph
