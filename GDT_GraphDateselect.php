@@ -52,15 +52,15 @@ final class GDT_GraphDateselect extends GDT_Select
 		return $choices;
 	}
 	
-// 	public function renderCell() : string
+// 	public function renderHTML() : string
 // 	{
 // 		$this->initChoices();
-// 		return parent::renderCell();
+// 		return parent::renderHTML();
 // 	}
 	
 	public function renderForm() : string
 	{
-		return $this->renderCell();
+		return $this->renderHTML();
 	}
 	
 	public function validate($value) : bool
