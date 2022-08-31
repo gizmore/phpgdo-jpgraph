@@ -103,7 +103,7 @@ abstract class MethodGraph extends Method
 		$param .= "&end={$this->getEnd()}";
 		$param .= "&width={$this->getWidth()}";
 		$param .= "&height={$this->getHeight()}";
-		return $this->href($param);
+		return $this->hrefNoSEO($param);
 	}
 	
 	public function execute()

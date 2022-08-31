@@ -1,4 +1,6 @@
 <?php
+namespace GDO\JPGraph\vendor;
+
 use GDO\Util\Strings;
 
 /**
