@@ -2,7 +2,6 @@
 namespace GDO\JPGraph;
 
 use GDO\Core\Method;
-use GDO\Core\GDT_UInt;
 use GDO\Date\GDT_DateTime;
 use GDO\Date\Time;
 use GDO\UI\WithTitle;
@@ -11,6 +10,7 @@ use Amenadiel\JpGraph\Text\Text;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use GDO\Util\Strings;
 use GDO\Core\Application;
+use GDO\UI\GDT_Length;
 
 /**
  * Render a graph.
@@ -20,26 +20,26 @@ abstract class MethodGraph extends Method
 {
 	use WithTitle;
 	
-	public function defaultWidth() { return Module_JPGraph::instance()->cfgDefaultWidth(); }
-	public function defaultHeight() { return Module_JPGraph::instance()->cfgDefaultHeight(); }
+	public function defaultWidth() : int { return Module_JPGraph::instance()->cfgDefaultWidth(); }
+	public function defaultHeight() : int { return Module_JPGraph::instance()->cfgDefaultHeight(); }
 	
 	public function gdoParameters() : array
 	{
-		return array(
-			GDT_UInt::make('width')->min(48)->max(1024)->initial($this->defaultWidth()),
-			GDT_UInt::make('height')->min(32)->max(1024)->initial($this->defaultHeight()),
+		return [
+			GDT_Length::make('width')->min(48)->max(1024)->initial($this->defaultWidth()),
+			GDT_Length::make('height')->min(32)->max(1024)->initial($this->defaultHeight()),
 			GDT_GraphDateselect::make('date')->initial('7days'),
 			GDT_DateTime::make('start')->initial(Time::getDate(Application::$TIME-Time::ONE_WEEK)),
 			GDT_DateTime::make('end')->initial(Time::getDate()),
-		);
+		];
 	}
 	
-	public function getWidth()
+	public function getWidth() : int
 	{
 		return $this->gdoParameterValue('width');
 	}
 	
-	public function getHeight()
+	public function getHeight() : int
 	{
 		return $this->gdoParameterValue('height');
 	}

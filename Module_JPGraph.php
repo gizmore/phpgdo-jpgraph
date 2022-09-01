@@ -32,8 +32,8 @@ final class Module_JPGraph extends GDO_Module
 			GDT_UInt::make('jpgraph_default_height')->initial('320'),
 		];
 	}
-	public function cfgDefaultWidth() { return $this->getConfigVar('jpgraph_default_width'); }
-	public function cfgDefaultHeight() { return $this->getConfigVar('jpgraph_default_height'); }
+	public function cfgDefaultWidth() { return $this->getConfigValue('jpgraph_default_width'); }
+	public function cfgDefaultHeight() { return $this->getConfigValue('jpgraph_default_height'); }
 	
 	/**
 	 * Define jpGraph ROOT_PATH on init.
