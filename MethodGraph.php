@@ -11,6 +11,7 @@ use Amenadiel\JpGraph\Plot\LinePlot;
 use GDO\Util\Strings;
 use GDO\Core\Application;
 use GDO\UI\GDT_Length;
+use PHPUnit\Framework\MockObject\Rule\Parameters;
 
 /**
  * Render a graph.
@@ -19,6 +20,9 @@ use GDO\UI\GDT_Length;
 abstract class MethodGraph extends Method
 {
 	use WithTitle;
+	
+	public function isCLI() : bool { return false; }
+	public function isSavingLastUrl() : bool { return false; }
 	
 	public function defaultWidth() : int { return Module_JPGraph::instance()->cfgDefaultWidth(); }
 	public function defaultHeight() : int { return Module_JPGraph::instance()->cfgDefaultHeight(); }

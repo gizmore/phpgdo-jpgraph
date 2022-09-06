@@ -3,7 +3,7 @@ namespace GDO\JPGraph;
 
 use GDO\Core\GDO_Module;
 use GDO\Core\GDT_Array;
-use GDO\Core\GDT_UInt;
+use GDO\UI\GDT_Length;
 
 /**
  * This module provides JPGraph for gdo6 applications.
@@ -28,8 +28,8 @@ final class Module_JPGraph extends GDO_Module
 	public function getConfig() : array
 	{
 		return [
-			GDT_UInt::make('jpgraph_default_width')->initial('480'),
-			GDT_UInt::make('jpgraph_default_height')->initial('320'),
+			GDT_Length::make('jpgraph_default_width')->initial('480'),
+			GDT_Length::make('jpgraph_default_height')->initial('320'),
 		];
 	}
 	public function cfgDefaultWidth() { return $this->getConfigValue('jpgraph_default_width'); }
