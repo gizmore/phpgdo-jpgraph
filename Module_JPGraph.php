@@ -40,10 +40,7 @@ final class Module_JPGraph extends GDO_Module
 	 */
 	public function onInit()
 	{
-		if (!defined('ROOT_PATH'))
-		{
-			define('ROOT_PATH', $this->filePath());
-		}
+		deff('ROOT_PATH', $this->filePath());
 	}
 	
 	/**
@@ -59,10 +56,13 @@ final class Module_JPGraph extends GDO_Module
 	 * Include a JpGraph file.
 	 * @param string $path
 	 */
-	public function includeJPGraph($path) : void
+	public function includeJPGraph(string $path) : void
 	{
-		$path = $this->jpgraphPath() . "/$path";
-		require_once $path;
+		$path2 = $this->filePath('vendor/autoload.php');
+		require_once $path2;
+		$path2 = $this->jpgraphPath() . "/$path";
+		require_once $path2;
+		
 	}
 	
 	public function onLoadLanguage() : void

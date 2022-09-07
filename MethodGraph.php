@@ -1,7 +1,6 @@
 <?php
 namespace GDO\JPGraph;
 
-use GDO\Core\Method;
 use GDO\Date\GDT_DateTime;
 use GDO\Date\Time;
 use GDO\UI\WithTitle;
@@ -11,13 +10,13 @@ use Amenadiel\JpGraph\Plot\LinePlot;
 use GDO\Util\Strings;
 use GDO\Core\Application;
 use GDO\UI\GDT_Length;
-use PHPUnit\Framework\MockObject\Rule\Parameters;
+use GDO\Core\MethodAjax;
 
 /**
  * Render a graph.
  * @author gizmore
  */
-abstract class MethodGraph extends Method
+abstract class MethodGraph extends MethodAjax
 {
 	use WithTitle;
 	
