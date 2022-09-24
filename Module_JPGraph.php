@@ -38,7 +38,7 @@ final class Module_JPGraph extends GDO_Module
 	/**
 	 * Define jpGraph ROOT_PATH on init.
 	 */
-	public function onInit()
+	public function onModuleInit()
 	{
 		deff('ROOT_PATH', $this->filePath());
 	}
