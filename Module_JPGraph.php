@@ -16,7 +16,7 @@ final class Module_JPGraph extends GDO_Module
 {
 	public int $priority = 40; 
 	
-    public function thirdPartyFolders() : array { return ['/jpgraph/']; }
+    public function thirdPartyFolders() : array { return ['jpgraph/', 'vendor/']; }
     
     public function getFriendencies() : array
     {
@@ -76,12 +76,6 @@ final class Module_JPGraph extends GDO_Module
 		{
 			$this->addJS('js/gdo-jpgraph.js');
 		}
-	}
-
-	public function hookIgnoreDocsFiles(GDT_Array $ignore)
-	{
-	    $ignore->data[] = 'GDO/JPGraph/jpgraph/**/*';
-	    $ignore->data[] = 'GDO/JPGraph/vendor/**/*';
 	}
 
 }
