@@ -26,7 +26,7 @@ final class GDT_GraphDateselect extends GDT_Select
 	###############
 	### Choices ###
 	###############
-	public function getChoices()
+	public function getChoices(): array
 	{
 		$choices = [];
 		$choices['custom'] = t('jpgraphsel_custom');
