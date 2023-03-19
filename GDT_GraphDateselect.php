@@ -73,14 +73,14 @@ final class GDT_GraphDateselect extends GDT_Select
 	### Settings ###
 	################
 	public bool $withToday = true;
-	public function withToday(bool $withToday=true) : self
+	public function withToday(bool $withToday=true): static
 	{
 		$this->withToday = $withToday;
 		return $this;
 	}
 	
 	public bool $withYesterday = true;
-	public function withYesterday(bool $withYesterday=true) : self
+	public function withYesterday(bool $withYesterday=true): static
 	{
 		$this->withYesterday = $withYesterday;
 		return $this;
