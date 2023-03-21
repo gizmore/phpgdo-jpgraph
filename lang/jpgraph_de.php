@@ -1,14 +1,15 @@
 <?php
 namespace GDO\JPGraph\lang;
+
 return [
 	'err_jpgraph_no_start_time' => 'Der Graph hat keine Startzeit.',
 	'err_jpgraph_no_end_time' => 'Der Graph hat keine Endzeit.',
 	'err_jpgraph_start_greater_end' => 'Die Startzeit ist hinter der Endzeit.',
-		
+
 	'df_jpgraph_datefmt_2' => '%d.',
 	'df_jpgraph_datefmt_5' => '%d.%m.',
 	'df_jpgraph_datefmt_10' => '%d.%m.%Y',
-		
+
 	'jpgraphsel_0' => 'Zeitraum wählen',
 	'jpgraphsel_custom' => 'Benutzerdefiniert',
 	'jpgraphsel_today' => 'Heute',
