@@ -72,7 +72,7 @@ final class GDT_GraphDateselect extends GDT_Select
 		return $this->renderHTML();
 	}
 
-	public function validate($value): bool
+	public function validate(int|float|string|array|null|object|bool $value): bool
 	{
 		$this->initChoices();
 		return parent::validate($value);

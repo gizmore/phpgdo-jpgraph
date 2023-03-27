@@ -34,7 +34,7 @@ class GDT_GraphSelect extends GDT
 		return $this;
 	}
 
-	public function render()
+	public function render(): array|string|null
 	{
 		$tVars = [
 			'gdt' => $this,

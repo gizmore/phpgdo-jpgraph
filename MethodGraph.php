@@ -5,6 +5,7 @@ use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use Amenadiel\JpGraph\Text\Text;
 use GDO\Core\Application;
+use GDO\Core\GDT;
 use GDO\Core\MethodAjax;
 use GDO\Date\GDT_DateTime;
 use GDO\Date\Time;
@@ -46,7 +47,7 @@ abstract class MethodGraph extends MethodAjax
 		return $this->gdoParameterValue('date');
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$jp = Module_JPGraph::instance();
 		$jp->includeJPGraph('graph/Graph.php');
@@ -69,7 +70,7 @@ abstract class MethodGraph extends MethodAjax
 		}
 
 		$graph = new Graph();
-		$this->renderGraph($graph, $ts, $te);
+		return $this->renderGraph($graph, $ts, $te);
 	}
 
 	public function getStartTime()
