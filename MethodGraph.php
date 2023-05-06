@@ -1,11 +1,15 @@
 <?php
+declare(strict_types=1);
 namespace GDO\JPGraph;
 
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use Amenadiel\JpGraph\Text\Text;
 use GDO\Core\Application;
+use GDO\Core\GDO_ArgException;
 use GDO\Core\GDT;
+use GDO\Core\GDT_RegEx;
+use GDO\Core\GDT_Response;
 use GDO\Core\MethodAjax;
 use GDO\Date\GDT_DateTime;
 use GDO\Date\Time;
@@ -17,22 +21,25 @@ use GDO\Util\Strings;
  * Render a graph.
  *
  * @author gizmore
+ * @version 7.0.3
  */
 abstract class MethodGraph extends MethodAjax
 {
 
 	use WithTitle;
 
+
 	public function isCLI(): bool { return false; }
+
 
 	public function isSavingLastUrl(): bool { return false; }
 
 	public function gdoParameters(): array
 	{
 		return [
-			GDT_Length::make('width')->min(48)->max(1024)->initial($this->defaultWidth()),
-			GDT_Length::make('height')->min(32)->max(1024)->initial($this->defaultHeight()),
-			GDT_GraphDateselect::make('date')->initial('7days'),
+			GDT_Length::make('width')->min(48)->max(1024)->initialValue($this->defaultWidth()),
+			GDT_Length::make('height')->min(32)->max(1024)->initialValue($this->defaultHeight()),
+			GDT_GraphDateselect::make('date')->notNull()->initial('7days'),
 			GDT_DateTime::make('start')->initial(Time::getDate(Application::$TIME - Time::ONE_WEEK)),
 			GDT_DateTime::make('end')->initial(Time::getDate()),
 		];
@@ -42,11 +49,17 @@ abstract class MethodGraph extends MethodAjax
 
 	public function defaultHeight(): int { return Module_JPGraph::instance()->cfgDefaultHeight(); }
 
-	public function getDate()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function getDate(): string
 	{
-		return $this->gdoParameterValue('date');
+		return $this->gdoParameterVar('date');
 	}
 
+	/**
+	 * @throws GDO_ArgException
+	 */
 	public function execute(): GDT
 	{
 		$jp = Module_JPGraph::instance();
@@ -73,12 +86,18 @@ abstract class MethodGraph extends MethodAjax
 		return $this->renderGraph($graph, $ts, $te);
 	}
 
-	public function getStartTime()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function getStartTime(): float|int
 	{
 		return Time::getTimestamp($this->getStart());
 	}
 
-	public function getStart()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function getStart(): ?string
 	{
 		if ($this->isCustomDate())
 		{
@@ -90,20 +109,26 @@ abstract class MethodGraph extends MethodAjax
 		}
 	}
 
-	public function isCustomDate()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function isCustomDate(): bool
 	{
 		return $this->getDate() === 'custom';
 	}
 
 	/**
-	 * @return GDT_GraphDateselect
+	 * @throws GDO_ArgException
 	 */
-	public function getDateColumn()
+	public function getDateColumn(): GDT_GraphDateselect
 	{
 		return $this->gdoParameter('date');
 	}
 
-	protected function showMessage($text)
+	/**
+	 * @throws GDO_ArgException
+	 */
+	protected function showMessage($text): GDT
 	{
 		$graph = $this->getGraph();
 		$graph->SetScale('textint');
@@ -119,31 +144,47 @@ abstract class MethodGraph extends MethodAjax
 		$graph->AddText($text);
 
 		$graph->Stroke();
-		die();
+		Application::exit();
+		return GDT_Response::make();
 	}
 
-	public function getGraph()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function getGraph(): Graph
 	{
 		$graph = new Graph($this->getWidth(), $this->getHeight());
 		return $graph;
 	}
 
+	/**
+	 * @throws GDO_ArgException
+	 */
 	public function getWidth(): int
 	{
-		return $this->gdoParameterValue('width');
+		return (int) round($this->gdoParameterValue('width'));
 	}
 
+	/**
+	 * @throws GDO_ArgException
+	 */
 	public function getHeight(): int
 	{
-		return $this->gdoParameterValue('height');
+		return (int)round($this->gdoParameterValue('height'));
 	}
 
-	public function getEndTime()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function getEndTime(): float|int
 	{
 		return Time::getTimestamp($this->getEnd());
 	}
 
-	public function getEnd()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function getEnd(): ?string
 	{
 		if ($this->isCustomDate())
 		{
@@ -155,9 +196,12 @@ abstract class MethodGraph extends MethodAjax
 		}
 	}
 
-	abstract public function renderGraph(Graph $graph, $ts, $te);
+	abstract public function renderGraph(Graph $graph, $ts, $te) :GDT;
 
-	public function hrefImage()
+	/**
+	 * @throws GDO_ArgException
+	 */
+	public function hrefImage(): string
 	{
 		$param = "&date={$this->getDate()}";
 		$param .= "&start={$this->getStart()}";
@@ -172,11 +216,9 @@ abstract class MethodGraph extends MethodAjax
 	 * Remove too much ticks.
 	 * Remove redundant date metrics like year or month, if they are always the same.
 	 *
-	 * @param array $datax
-	 *
-	 * @return array
+	 * @throws GDO_ArgException
 	 */
-	protected function filterXAxisDaily(array &$datax)
+	protected function filterXAxisDaily(array &$datax): array
 	{
 		# Remove last entry
 		end($datax);
@@ -254,11 +296,9 @@ abstract class MethodGraph extends MethodAjax
 	/**
 	 * Calucalte N for keep every n-th tick.
 	 *
-	 * @param array $datax
-	 *
-	 * @return int
+	 * @throws GDO_ArgException
 	 */
-	protected function keepEveryNthTick(array $datax)
+	protected function keepEveryNthTick(array $datax): int
 	{
 		$len = count($datax) - 1;
 		$w = $this->getWidth();
@@ -266,7 +306,7 @@ abstract class MethodGraph extends MethodAjax
 		$wanted = 24; # We want 24px per tick label
 		if ($ppd < $wanted)
 		{
-			return round($wanted / $ppd);
+			return (int) round($wanted / $ppd);
 		}
 		return 1;
 	}

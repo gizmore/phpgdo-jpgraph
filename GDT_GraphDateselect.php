@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace GDO\JPGraph;
 
 use GDO\Core\Application;
+use GDO\Core\GDO_ArgException;
+use GDO\Core\GDO_Exception;
 use GDO\Core\GDT_Select;
 use GDO\Date\Time;
 
@@ -10,7 +13,7 @@ use GDO\Date\Time;
  * This year, last year, yesterday, last month, etc.
  * Converts these options to start- and endtime.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 6.9.0
  * @author gizmore
  * @see Time
@@ -25,22 +28,21 @@ final class GDT_GraphDateselect extends GDT_Select
 	###############
 	public bool $withYesterday = true;
 
-// 	public function renderHTML() : string
-// 	{
-// 		$this->initChoices();
-// 		return parent::renderHTML();
-// 	}
+
+	public bool $withCustom = true;
 
 	protected function __construct()
 	{
 		parent::__construct();
-		$this->emptyLabel('jpgraphsel_0');
 	}
 
 	public function getChoices(): array
 	{
 		$choices = [];
-		$choices['custom'] = t('jpgraphsel_custom');
+		if ($this->withCustom)
+		{
+			$choices['custom'] = t('jpgraphsel_custom');
+		}
 		if ($this->withToday)
 		{
 			$choices['today'] = t('jpgraphsel_today');
@@ -59,7 +61,6 @@ final class GDT_GraphDateselect extends GDT_Select
 		$choices['last_quartal'] = t('jpgraphsel_last_quartal');
 		$choices['this_year'] = t('jpgraphsel_this_year');
 		$choices['last_year'] = t('jpgraphsel_last_year');
-
 		return $choices;
 	}
 
@@ -90,23 +91,27 @@ final class GDT_GraphDateselect extends GDT_Select
 		return $this;
 	}
 
+	public function withoutCustom(bool $without=true): self
+	{
+		$this->withCustom = !$without;
+		return $this;
+	}
+
 	##################
 	### Range calc ###
 	##################
-	public function getStartDate()
+	public function getStartDate(): ?string
 	{
 		return Time::getDate($this->getStartTime());
 	}
 
 	/**
 	 * Get start timestamp for select setting.
-	 *
-	 * @return int
 	 */
-	public function getStartTime()
+	public function getStartTime(): ?int
 	{
 		$now = mktime(0, 0, 0);
-		switch ($this->getValue())
+		switch ($this->getVar())
 		{
 			case 'today':
 				return $now;
@@ -121,7 +126,7 @@ final class GDT_GraphDateselect extends GDT_Select
 			case 'last_week':
 				return strtotime('last monday') - Time::ONE_WEEK;
 			case 'this_month':
-				return Time::getTimestamp(date('Y-m-01 00:00:00'));
+				return (int) round(Time::getTimestamp(date('Y-m-01 00:00:00')));
 			case 'last_month':
 				$m = intval(date('m'), 10) - 1;
 				$y = intval(date('y'), 10);
@@ -154,39 +159,35 @@ final class GDT_GraphDateselect extends GDT_Select
 			case 'last_year':
 				$y = intval(date('y'), 10);
 				return mktime(0, 0, 0, 1, 1, $y - 1);
+			default:
+				return null;
 		}
 	}
 
-	public function getEndDate()
+	public function getEndDate(): ?string
 	{
 		return Time::getDate($this->getEndTime());
 	}
 
-	public function getEndTime()
+	public function getEndTime(): ?int
 	{
-		$now = Application::$TIME;
-
-		switch ($this->getValue())
+		switch ($this->getVar())
 		{
-			case 'today':
-				return $now;
 			case 'yesterday':
 				return mktime(0, 0, 0) - 1;
+			case 'today':
 			case '7days':
-				return $now;
 			case '14days':
-				return $now;
 			case 'this_week':
-				return $now;
+			case 'this_month':
+			case 'this_quartal':
+			case 'this_year':
+				return Application::$TIME;
 			case 'last_week':
 				return strtotime('last monday') - 1;
-			case 'this_month':
-				return $now;
 			case 'last_month':
 				$m = intval(date('m'), 10);
 				return mktime(0, 0, 0, $m, 1) - 1;
-			case 'this_quartal':
-				return $now;
 			case 'last_quartal':
 				$y = intval(date('y'), 10);
 				$m = intval(date('m'), 10) - 1;
@@ -196,11 +197,13 @@ final class GDT_GraphDateselect extends GDT_Select
 				}
 				$m -= $m % 3;
 				return mktime(0, 0, 0, $m + 1, 1, $y) - 1;
-			case 'this_year':
-				return $now;
+
 			case 'last_year':
 				$y = intval(date('y'), 10);
 				return mktime(23, 59, 59, 12, 31, $y - 1);
+
+			default:
+				return null;
 		}
 	}
 
