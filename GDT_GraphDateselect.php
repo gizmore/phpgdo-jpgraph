@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace GDO\JPGraph;
 
 use GDO\Core\Application;
-use GDO\Core\GDO_ArgException;
+use GDO\Core\GDO_ArgError;
 use GDO\Core\GDO_Exception;
 use GDO\Core\GDT_Select;
 use GDO\Date\Time;
@@ -36,7 +36,7 @@ final class GDT_GraphDateselect extends GDT_Select
 		parent::__construct();
 	}
 
-	public function getChoices(): array
+	protected function getChoices(): array
 	{
 		$choices = [];
 		if ($this->withCustom)

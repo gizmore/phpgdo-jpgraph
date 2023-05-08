@@ -6,7 +6,7 @@ use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
 use Amenadiel\JpGraph\Text\Text;
 use GDO\Core\Application;
-use GDO\Core\GDO_ArgException;
+use GDO\Core\GDO_ArgError;
 use GDO\Core\GDT;
 use GDO\Core\GDT_RegEx;
 use GDO\Core\GDT_Response;
@@ -50,7 +50,7 @@ abstract class MethodGraph extends MethodAjax
 	public function defaultHeight(): int { return Module_JPGraph::instance()->cfgDefaultHeight(); }
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getDate(): string
 	{
@@ -58,7 +58,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function execute(): GDT
 	{
@@ -87,7 +87,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getStartTime(): float|int
 	{
@@ -95,7 +95,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getStart(): ?string
 	{
@@ -110,7 +110,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function isCustomDate(): bool
 	{
@@ -118,7 +118,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getDateColumn(): GDT_GraphDateselect
 	{
@@ -126,7 +126,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	protected function showMessage($text): GDT
 	{
@@ -149,7 +149,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getGraph(): Graph
 	{
@@ -158,7 +158,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getWidth(): int
 	{
@@ -166,7 +166,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getHeight(): int
 	{
@@ -174,7 +174,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getEndTime(): float|int
 	{
@@ -182,7 +182,7 @@ abstract class MethodGraph extends MethodAjax
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function getEnd(): ?string
 	{
@@ -199,7 +199,7 @@ abstract class MethodGraph extends MethodAjax
 	abstract public function renderGraph(Graph $graph, $ts, $te) :GDT;
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function hrefImage(): string
 	{
@@ -216,7 +216,7 @@ abstract class MethodGraph extends MethodAjax
 	 * Remove too much ticks.
 	 * Remove redundant date metrics like year or month, if they are always the same.
 	 *
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	protected function filterXAxisDaily(array &$datax): array
 	{
@@ -296,7 +296,7 @@ abstract class MethodGraph extends MethodAjax
 	/**
 	 * Calucalte N for keep every n-th tick.
 	 *
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	protected function keepEveryNthTick(array $datax): int
 	{
