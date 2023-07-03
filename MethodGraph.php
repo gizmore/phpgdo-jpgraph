@@ -28,10 +28,6 @@ abstract class MethodGraph extends MethodAjax
 
 	use WithTitle;
 
-
-	public function isCLI(): bool { return false; }
-
-
 	public function isSavingLastUrl(): bool { return false; }
 
 	public function gdoParameters(): array
